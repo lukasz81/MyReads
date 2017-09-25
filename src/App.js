@@ -7,12 +7,28 @@ import './App.css'
 
 class BooksApp extends React.Component {
   state = {
-    books:[]
+    books: [{
+      shelfOne: [],
+      shelfTwo: [],
+      shelfThree: []
+    }]
    }
+  putBooksOnShelves = (shelf, book) => {
+    this.setState(state => {
+      books: this.state.books[0][shelf].push([book])
+    });
+  }
   componentDidMount() {
     BooksAPI.getAll().then((books) => {
-      console.log(books);
-      this.setState({ books })
+      books.forEach((book) => {
+        if (book.shelf === 'currentlyReading') {
+          this.putBooksOnShelves('shelfOne', book);
+        } else if (book.shelf === 'wantToRead') {
+          this.putBooksOnShelves('shelfTwo', book);
+        } else {
+          this.putBooksOnShelves('shelfThree', book);
+        }
+      })
     })
   }
   render() {
