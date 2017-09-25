@@ -1,27 +1,41 @@
 import React, {Component} from 'react';
 
 class BookShelfs extends Component {
+  handleChange = (book,shelf) => {
+    this.props.onUpdateShelf(book,shelf)
+  }
+  mapHeaderNames = (shelf) => {
+    switch(shelf) {
+      case 'currentlyReading':
+        return 'Currently reading'
+      case 'wantToRead':
+        return 'Want to read'
+      default:
+        return 'Read'
+    }
+  }
   render(){
     const {books} = this.props;
-    const {shelfOne} = this.props.books[0];
-    const {shelfTwo} = this.props.books[0];
-    const {shelfThree} = this.props.books[0];
+    const {shelves} = this.props;
     return(
         <div className="list-books">
           <div className="list-books-title"><h1>MyReads</h1></div>
           <div className="list-books-content">
-            <div className="bookshelf">
-                <h2 className="bookshelf-title">Currently Reading</h2>
+            {shelves.map( shelf => (
+              <div key={shelf.toString()} className="bookshelf">
+                <h2 className="bookshelf-title">{this.mapHeaderNames(shelf)}</h2>
                 <div className="bookshelf-books">
                   <ol className="books-grid">
-                    {shelfOne.map( shelf => (
-                      <li key={shelf[0].id}>
+                    {books.filter( book => book.shelf === shelf).map( book => (
+                      <li key={book.id}>
                         <div  className="book">
                           <div className="book-top">
-                            <div className="book-cover" style={{ width: 128, height: 193, backgroundImage:`url("${shelf[0].imageLinks.thumbnail}")` }}>
+                            <div className="book-cover" style={{ width: 128, height: 193, backgroundImage:`url("${book.imageLinks.thumbnail}")` }}>
                             </div>
                             <div className="book-shelf-changer">
-                              <select>
+                              <select
+                                defaultValue={`${book.shelf}`}
+                                onChange={(event,currentBook=book) => this.handleChange(currentBook,event.target.value)}>
                                 <option value="none" disabled>Move to...</option>
                                 <option value="currentlyReading">Currently Reading</option>
                                 <option value="wantToRead">Want to Read</option>
@@ -30,9 +44,9 @@ class BookShelfs extends Component {
                               </select>
                             </div>
                           </div>
-                          <div className="book-title">{shelf[0].title}</div>
+                          <div className="book-title">{book.title}</div>
                           <div className="book-authors">
-                            {shelf[0].authors.map( (author,index) => (
+                            {book.authors.map( (author,index) => (
                               <span key={index}>{author}<br/></span>
                             ))}
                           </div>
@@ -41,67 +55,8 @@ class BookShelfs extends Component {
                     ))}
                   </ol>
                 </div>
-                <h2 className="bookshelf-title">Want to read</h2>
-                <div className="bookshelf-books">
-                  <ol className="books-grid">
-                    {shelfTwo.map( shelf => (
-                      <li key={shelf[0].id}>
-                        <div  className="book">
-                          <div className="book-top">
-                            <div className="book-cover" style={{ width: 128, height: 193, backgroundImage:`url("${shelf[0].imageLinks.thumbnail}")` }}>
-                            </div>
-                            <div className="book-shelf-changer">
-                              <select>
-                                <option value="none" disabled>Move to...</option>
-                                <option value="currentlyReading">Currently Reading</option>
-                                <option value="wantToRead">Want to Read</option>
-                                <option value="read">Read</option>
-                                <option value="none">None</option>
-                              </select>
-                            </div>
-                          </div>
-                          <div className="book-title">{shelf[0].title}</div>
-                          <div className="book-authors">
-                            {shelf[0].authors.map( (author,index) => (
-                              <span key={index}>{author}<br/></span>
-                            ))}
-                          </div>
-                        </div>
-                      </li>
-                    ))}
-                  </ol>
-                </div>
-                <h2 className="bookshelf-title">Read</h2>
-                <div className="bookshelf-books">
-                  <ol className="books-grid">
-                    {shelfThree.map( shelf => (
-                      <li key={shelf[0].id}>
-                        <div  className="book">
-                          <div className="book-top">
-                            <div className="book-cover" style={{ width: 128, height: 193, backgroundImage:`url("${shelf[0].imageLinks.thumbnail}")` }}>
-                            </div>
-                            <div className="book-shelf-changer">
-                              <select>
-                                <option value="none" disabled>Move to...</option>
-                                <option value="currentlyReading">Currently Reading</option>
-                                <option value="wantToRead">Want to Read</option>
-                                <option value="read">Read</option>
-                                <option value="none">None</option>
-                              </select>
-                            </div>
-                          </div>
-                          <div className="book-title">{shelf[0].title}</div>
-                          <div className="book-authors">
-                            {shelf[0].authors.map( (author,index) => (
-                              <span key={index}>{author}<br/></span>
-                            ))}
-                          </div>
-                        </div>
-                      </li>
-                    ))}
-                  </ol>
-                </div>
-            </div>
+              </div>
+            ))}
           </div>
         </div>
     )}

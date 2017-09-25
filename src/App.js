@@ -7,27 +7,26 @@ import './App.css'
 
 class BooksApp extends React.Component {
   state = {
-    books: [{
-      shelfOne: [],
-      shelfTwo: [],
-      shelfThree: []
-    }]
-   }
-  putBooksOnShelves = (shelf, book) => {
-    this.setState(state => {
-      books: this.state.books[0][shelf].push([book])
-    });
+    books: [],
+    shelves: []
+  };
+
+  onUpdateShelf = (book,shelf) => {
+    const currentBook = book;
+    currentBook.shelf = shelf;
+    BooksAPI.update(book, shelf).then( books => {
+      this.setState( state => ({
+        books: state.books.filter( books => books.id !== currentBook.id ).concat([currentBook])
+      }))
+    })
   }
   componentDidMount() {
-    BooksAPI.getAll().then((books) => {
-      books.forEach((book) => {
-        if (book.shelf === 'currentlyReading') {
-          this.putBooksOnShelves('shelfOne', book);
-        } else if (book.shelf === 'wantToRead') {
-          this.putBooksOnShelves('shelfTwo', book);
-        } else {
-          this.putBooksOnShelves('shelfThree', book);
-        }
+    BooksAPI.getAll().then( books => {
+      books.forEach(book => {
+        this.setState(state => {
+          books: this.state.books.push(book)
+          shelves: !this.state.shelves.includes(book.shelf) ? this.state.shelves.push(book.shelf) : null
+        });
       })
     })
   }
@@ -41,7 +40,9 @@ class BooksApp extends React.Component {
           )}/>
         <Route exact path='/' render={() => (
             <div>
-              <BookShelf books={this.state.books} />
+              <BookShelf onUpdateShelf={ (book,shelf) => { this.onUpdateShelf(book,shelf) }}
+                         shelves={this.state.shelves}
+                         books={this.state.books} />
               <div className="open-search">
                 <Link to='/search'>Add a book</Link>
               </div>
