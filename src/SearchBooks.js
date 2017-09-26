@@ -6,9 +6,12 @@ class SearchBooks extends Component {
   handleChange = (query) => {
     this.props.searchForBooks(query)
   }
+  handleSelectChange = (book,shelf) => {
+    this.props.updateShelf(book,shelf)
+  }
   render() {
     const {results} = this.props;
-    const sortedResults = results.sort(sortBy('title'));
+    const sortedResults = (results.length > 0) ? results.sort(sortBy('title')) : [];
     return(
       <div className="search-books">
         <div className="search-books-bar">
@@ -30,8 +33,8 @@ class SearchBooks extends Component {
                     </div>
                     <div className="book-shelf-changer">
                       <select
-                        defaultValue={`${book.shelf}`}
-                        onChange={(event,currentBook=book) => this.handleChange(currentBook,event.target.value)}>
+                        defaultValue={ book.shelf ? `${book.shelf}`:`none`}
+                        onChange={(event,currentBook=book) => this.handleSelectChange(currentBook,event.target.value)}>
                         <option value="none" disabled>Move to...</option>
                         <option value="currentlyReading">Currently Reading</option>
                         <option value="wantToRead">Want to Read</option>

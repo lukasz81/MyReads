@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 
 class BookShelfs extends Component {
   handleChange = (book,shelf) => {
-    this.props.onUpdateShelf(book,shelf)
+    this.props.updateShelf(book,shelf)
   }
   mapHeaderNames = (shelf) => {
     switch(shelf) {
@@ -46,9 +46,13 @@ class BookShelfs extends Component {
                           </div>
                           <div className="book-title">{book.title}</div>
                           <div className="book-authors">
-                            {book.authors.map( (author,index) => (
-                              <span key={index}>{author}<br/></span>
-                            ))}
+                            {book.authors !== undefined && (
+                              <div>
+                                {book.authors.map( (author,index) => (
+                                  <span key={index}>{author}<br/></span>
+                                ))}
+                              </div>
+                            )}
                           </div>
                         </div>
                       </li>

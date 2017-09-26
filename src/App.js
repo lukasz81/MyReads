@@ -13,7 +13,6 @@ class BooksApp extends React.Component {
   };
 
   onSearchForBooks = (query) => {
-    console.log(query);
     const limit = 10;
     if (query.length > 0) {
       BooksAPI.search(query, limit).then( results => {
@@ -41,7 +40,7 @@ class BooksApp extends React.Component {
       books.forEach(book => {
         this.setState(state => {
           books: this.state.books.push(book)
-          shelves: !this.state.shelves.includes(book.shelf) ? this.state.shelves.push(book.shelf) : null
+          shelves: !this.state.shelves.includes(book.shelf) ? this.state.shelves.push(book.shelf) : ''
         });
       })
     })
@@ -49,15 +48,16 @@ class BooksApp extends React.Component {
   render() {
     return (
       <div className="app">
-          <Route path='/search' render={({history}) => (
-            <SearchBooks
-              searchForBooks={query => this.onSearchForBooks(query)}
-              results={this.state.results}
-            />
-          )}/>
+        <Route path='/search' render={() => (
+          <SearchBooks
+            searchForBooks={query => this.onSearchForBooks(query)}
+            updateShelf={ (book,shelf) => { this.onUpdateShelf(book,shelf) }}
+            results={this.state.results}
+          />
+        )}/>
         <Route exact path='/' render={() => (
             <div>
-              <BookShelf onUpdateShelf={ (book,shelf) => { this.onUpdateShelf(book,shelf) }}
+              <BookShelf updateShelf={ (book,shelf) => { this.onUpdateShelf(book,shelf) }}
                          shelves={this.state.shelves}
                          books={this.state.books}
               />
