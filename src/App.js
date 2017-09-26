@@ -8,9 +8,25 @@ import './App.css'
 class BooksApp extends React.Component {
   state = {
     books: [],
+    results: [],
     shelves: []
   };
 
+  onSearchForBooks = (query) => {
+    console.log(query);
+    const limit = 10;
+    if (query.length > 0) {
+      BooksAPI.search(query, limit).then( results => {
+        this.setState( state => ({
+          results: state.results = results
+        }))
+      })
+    } else {
+      this.setState( state => ({
+        results: state.results = []
+      }))
+    }
+  }
   onUpdateShelf = (book,shelf) => {
     const currentBook = book;
     currentBook.shelf = shelf;
@@ -34,15 +50,17 @@ class BooksApp extends React.Component {
     return (
       <div className="app">
           <Route path='/search' render={({history}) => (
-            <SearchBooks changeState={() => {
-                history.push('/');
-              }}/>
+            <SearchBooks
+              searchForBooks={query => this.onSearchForBooks(query)}
+              results={this.state.results}
+            />
           )}/>
         <Route exact path='/' render={() => (
             <div>
               <BookShelf onUpdateShelf={ (book,shelf) => { this.onUpdateShelf(book,shelf) }}
                          shelves={this.state.shelves}
-                         books={this.state.books} />
+                         books={this.state.books}
+              />
               <div className="open-search">
                 <Link to='/search'>Add a book</Link>
               </div>
