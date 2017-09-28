@@ -4,16 +4,12 @@ class Book extends Component {
   emitHandleChange = (book,shelf) => {
     this.props.handleChange(book,shelf)
   }
-  checkIfExistsInJson = (key) => {
-    if (!key.smallThumbnail) return false
-    return true
-  }
-  render(){
+  render() {
     const {book} = this.props;
     return(
       <div  className="book">
         <div className="book-top">
-          {this.checkIfExistsInJson(book.imageLinks) && (
+          {(book.hasOwnProperty('imageLinks') && book.imageLinks.hasOwnProperty('smallThumbnail')) && (
             <div className="book-cover" style={{ width: 128, height: 193, backgroundImage:`url("${book.imageLinks.smallThumbnail}")` }}>
             </div>
           )}
@@ -31,7 +27,7 @@ class Book extends Component {
         </div>
         <div className="book-title">{book.title}</div>
         <div className="book-authors">
-          {book.authors !== undefined && (
+          {book.hasOwnProperty('authors') && (
             <div>
               {book.authors.map( (author,index) => (
                 <span key={index}>{author}<br/></span>
