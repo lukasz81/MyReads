@@ -26,6 +26,9 @@ class SearchBooks extends Component {
         </div>
         <div className="search-books-results">
           <ol className="books-grid">
+            {sortedResults.length === 0 && (
+              <p>NO RESULTS</p>
+            )}
             {sortedResults.map( book => (
               <li key={book.id}>
                 <Book handleChange={(book,shelf) => this.handleSelectChange(book,shelf)} book={book}/>
