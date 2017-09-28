@@ -9,8 +9,8 @@ class Book extends Component {
     return(
       <div  className="book">
         <div className="book-top">
-          {(book.hasOwnProperty('imageLinks') && book.imageLinks.hasOwnProperty('smallThumbnail')) && (
-            <div className="book-cover" style={{ width: 128, height: 193, backgroundImage:`url("${book.imageLinks.smallThumbnail}")` }}>
+          {(book.hasOwnProperty('imageLinks') && book.imageLinks.hasOwnProperty('thumbnail')) && (
+            <div className="book-cover" style={{ width: 128, height: 193, backgroundImage:`url("${book.imageLinks.thumbnail}")` }}>
             </div>
           )}
           <div className="book-shelf-changer">
