@@ -1,5 +1,5 @@
 import React from 'react'
-import {Route,Link} from 'react-router-dom';
+import {Route} from 'react-router-dom';
 import * as BooksAPI from './BooksAPI'
 import SearchBooks from './SearchBooks.js'
 import BookShelf from './BookShelf.js'
@@ -9,7 +9,8 @@ class BooksApp extends React.Component {
   state = {
     books: [],
     results: [],
-    shelves: []
+    shelves: [],
+    isLoading: true
   };
 
   onSearchForBooks = (query) => {
@@ -35,13 +36,21 @@ class BooksApp extends React.Component {
       }))
     })
   }
+  addOnlyUniqueValues = (value) => {
+    if (!this.state.shelves.includes(value)) {
+      this.state.shelves.concat([value])
+    } else {
+      return
+    }
+  }
   componentDidMount() {
     BooksAPI.getAll().then( books => {
       books.forEach(book => {
-        this.setState(state => {
-          books: this.state.books.push(book)
-          shelves: !this.state.shelves.includes(book.shelf) ? this.state.shelves.push(book.shelf) : ''
-        });
+        this.setState(state => ({
+          books: state.books.concat([book]),
+          shelves: !state.shelves.includes(book.shelf) ? state.shelves.concat([book.shelf]) : state.shelves.slice(state.shelves[book.shelf]),
+          isLoading: state.isLoading = false
+        }));
       })
     })
   }
@@ -56,16 +65,15 @@ class BooksApp extends React.Component {
           />
         )}/>
         <Route exact path='/' render={() => (
-            <div>
-              <BookShelf updateShelf={ (book,shelf) => { this.onUpdateShelf(book,shelf) }}
-                         shelves={this.state.shelves}
-                         books={this.state.books}
-              />
-              <div className="open-search">
-                <Link to='/search'>Add a book</Link>
-              </div>
-            </div>
-          )}/>
+          <div className={this.state.isLoading ? 'busy':''}>
+            <BookShelf
+              updateShelf={ (book,shelf) => { this.onUpdateShelf(book,shelf) }}
+              shelves={this.state.shelves}
+              books={this.state.books}
+              isLoading={this.state.isLoading}
+            />
+          </div>
+        )}/>
       </div> )
   }
 }

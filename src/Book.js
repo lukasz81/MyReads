@@ -3,14 +3,14 @@ import React, {Component} from 'react';
 class Book extends Component {
   emitHandleChange = (book,shelf) => {
     this.props.handleChange(book,shelf)
-  }
+  };
   render() {
     const {book} = this.props;
     return(
-      <div  className="book">
+      <div className={'book'}>
         <div className="book-top">
           {(book.hasOwnProperty('imageLinks') && book.imageLinks.hasOwnProperty('thumbnail')) && (
-            <div className="book-cover" style={{ width: 128, height: 193, backgroundImage:`url("${book.imageLinks.thumbnail}")` }}>
+            <div className="book-cover" style={{width: 128, height: 193, backgroundImage:`url("${book.imageLinks.thumbnail}")`}}>
             </div>
           )}
           <div className="book-shelf-changer">

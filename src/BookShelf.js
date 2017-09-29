@@ -1,7 +1,13 @@
 import React, {Component} from 'react';
+import {Link} from 'react-router-dom';
 import Book from './Book.js';
+import PropTypes from 'prop-types';
 
 class BookShelfs extends Component {
+  static PropTypes = {
+    books: PropTypes.array.isRequired,
+    shelves: PropTypes.array.isRequired
+  }
   handleChange = (book,shelf) => {
     this.props.updateShelf(book,shelf)
   }
@@ -18,10 +24,11 @@ class BookShelfs extends Component {
   render(){
     const {books} = this.props;
     const {shelves} = this.props;
+    const {isLoading} = this.props;
     return(
         <div className="list-books">
           <div className="list-books-title"><h1>MyReads</h1></div>
-          <div className="list-books-content">
+          <div className='list-books-content'>
             {shelves.map( shelf => (
               <div key={shelf.toString()} className="bookshelf">
                 <h2 className="bookshelf-title">{this.mapHeaderNames(shelf)}</h2>
@@ -36,6 +43,9 @@ class BookShelfs extends Component {
                 </div>
               </div>
             ))}
+          </div>
+          <div className="open-search">
+            <Link to='/search'>Add a book</Link>
           </div>
         </div>
     )}

@@ -1,9 +1,13 @@
 import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
+import PropTypes from 'prop-types';
 import sortBy from 'sort-by';
 import Book from './Book.js';
 
 class SearchBooks extends Component {
+  static PropTypes = {
+    results: PropTypes.array.isRequired
+  }
   handleChange = (query) => {
     this.props.searchForBooks(query)
   }
