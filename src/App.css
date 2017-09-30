@@ -7,13 +7,15 @@ body {
 body, .app {
   background: white;
 }
+.busy.books {
+  background-attachment: fixed;
+  min-height: 100vh;
+}
 .busy{
   background-image: url('./icons/spinner.gif');
   background-position: 50%;
   background-repeat: no-repeat;
   background-size: 100px;
-  background-attachment: fixed;
-  min-height: 100vh;
 }
 .busy > * {
   opacity: 0.5;

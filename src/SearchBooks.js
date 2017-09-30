@@ -36,7 +36,7 @@ class SearchBooks extends Component {
             )}
             {sortedResults.map( book => (
               <li key={book.id}>
-                <Book handleChange={ (book,shelf) => this.handleSelectChange(book,shelf)} books={books} book={book}/>
+                <Book handleChange={ (book,shelf) => this.handleSelectChange(book,shelf)} shouldShowLoading={false} books={books} book={book}/>
               </li>
             ))}
           </ol>

@@ -24,19 +24,18 @@ class BookShelfs extends Component {
   render(){
     const {books} = this.props;
     const {shelves} = this.props;
-    const {isLoading} = this.props;
     return(
         <div className="list-books">
           <div className="list-books-title"><h1>MyReads</h1></div>
           <div className='list-books-content'>
-            {shelves.map( shelf => (
+            {shelves.map(shelf => (
               <div key={shelf.toString()} className="bookshelf">
                 <h2 className="bookshelf-title">{this.mapHeaderNames(shelf)}</h2>
                 <div className="bookshelf-books">
                   <ol className="books-grid">
-                    {books.filter( book => book.shelf === shelf).map( book => (
+                    {books.filter(book => book.shelf === shelf).map( book => (
                       <li key={book.id}>
-                        <Book handleChange={(book,shelf) => this.handleChange(book,shelf)} book={book}/>
+                        <Book handleChange={(book,shelf) => this.handleChange(book,shelf)} shouldShowLoading={true} book={book}/>
                       </li>
                     ))}
                   </ol>

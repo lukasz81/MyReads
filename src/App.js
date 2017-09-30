@@ -17,12 +17,12 @@ class BooksApp extends React.Component {
     const limit = 10;
     if (query.length > 0) {
       BooksAPI.search(query, limit).then( results => {
-        this.setState( state => ({
+        this.setState(state => ({
           results: state.results = results
         }))
       })
     } else {
-      this.setState( state => ({
+      this.setState(state => ({
         results: state.results = []
       }))
     }
@@ -31,20 +31,13 @@ class BooksApp extends React.Component {
     const currentBook = book;
     currentBook.shelf = shelf;
     BooksAPI.update(currentBook, shelf).then( books => {
-      this.setState( state => ({
+      this.setState(state => ({
         books: state.books.filter( books => books.id !== currentBook.id ).concat([currentBook])
       }))
     })
   }
-  addOnlyUniqueValues = (value) => {
-    if (!this.state.shelves.includes(value)) {
-      this.state.shelves.concat([value])
-    } else {
-      return
-    }
-  }
   componentDidMount() {
-    BooksAPI.getAll().then( books => {
+    BooksAPI.getAll().then(books => {
       books.forEach(book => {
         this.setState(state => ({
           books: state.books.concat([book]),
@@ -59,19 +52,18 @@ class BooksApp extends React.Component {
       <div className="app">
         <Route path='/search' render={() => (
           <SearchBooks
-            searchForBooks={query => this.onSearchForBooks(query)}
+            searchForBooks={ query => this.onSearchForBooks(query) }
             updateShelf={ (book,shelf) => { this.onUpdateShelf(book,shelf) }}
             results={this.state.results}
             books={this.state.books}
           />
         )}/>
         <Route exact path='/' render={() => (
-          <div className={this.state.isLoading ? 'busy':''}>
+          <div className={this.state.isLoading ? 'books busy':'books'}>
             <BookShelf
               updateShelf={ (book,shelf) => { this.onUpdateShelf(book,shelf) }}
               shelves={this.state.shelves}
               books={this.state.books}
-              isLoading={this.state.isLoading}
             />
           </div>
         )}/>

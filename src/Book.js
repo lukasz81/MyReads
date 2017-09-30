@@ -1,8 +1,12 @@
 import React, {Component} from 'react';
 
 class Book extends Component {
+  state = {
+    isBookLoading: false
+  }
   emitHandleChange = (book,shelf) => {
     this.props.handleChange(book,shelf)
+    this.setState({ isBookLoading: true })
   };
   checkForShelf = (currentBook) => {
     const booksOnShelves = this.props.books;
@@ -19,8 +23,9 @@ class Book extends Component {
   }
   render() {
     const {book} = this.props;
+    const {shouldShowLoading} = this.props
     return(
-      <div className="book">
+      <div className={(this.state.isBookLoading && shouldShowLoading) ? 'book busy':'book'}>
         <div className="book-top">
           {(book.hasOwnProperty('imageLinks') && book.imageLinks.hasOwnProperty('thumbnail')) && (
             <div className="book-cover" style={{width: 128, height: 193, backgroundImage:`url("${book.imageLinks.thumbnail}")`}}>
