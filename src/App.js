@@ -62,6 +62,7 @@ class BooksApp extends React.Component {
             searchForBooks={query => this.onSearchForBooks(query)}
             updateShelf={ (book,shelf) => { this.onUpdateShelf(book,shelf) }}
             results={this.state.results}
+            books={this.state.books}
           />
         )}/>
         <Route exact path='/' render={() => (
