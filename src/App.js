@@ -10,15 +10,24 @@ class BooksApp extends React.Component {
     books: [],
     results: [],
     shelves: [],
-    isLoading: true
-  };
-
+    isLoading: true,
+    isAppInError: false,
+    limit: 10
+  }
+  addShelfIfNeeded = (results) => {
+    const booksOnShelves = this.state.books;
+    results.map(book => {
+      const existingBook = booksOnShelves.find((b) => b.id === book.id)
+      book.shelf = existingBook ? existingBook.shelf : 'none'
+      return
+    })
+    return results
+  }
   onSearchForBooks = (query) => {
-    const limit = 10;
     if (query.length > 0) {
-      BooksAPI.search(query, limit).then( results => {
+      BooksAPI.search(query, this.state.limit).then(results => {
         this.setState(state => ({
-          results: state.results = results
+          results: state.results = this.addShelfIfNeeded(results)
         }))
       })
     } else {
@@ -30,10 +39,13 @@ class BooksApp extends React.Component {
   onUpdateShelf = (book,shelf) => {
     const currentBook = book;
     currentBook.shelf = shelf;
-    BooksAPI.update(currentBook, shelf).then( books => {
+    BooksAPI.update(currentBook, shelf).then(books => {
       this.setState(state => ({
-        books: state.books.filter( books => books.id !== currentBook.id ).concat([currentBook])
+        books: state.books.filter(books => books.id !== currentBook.id).concat([currentBook]),
+        isLoading: state.isLoading = false
       }))
+    }).catch(error => {
+      this.handleError(error);
     })
   }
   componentDidMount() {
@@ -45,7 +57,18 @@ class BooksApp extends React.Component {
           isLoading: state.isLoading = false
         }));
       })
+    }).catch(error => {
+      this.handleError();
     })
+  }
+  handleError(error) {
+    console.log(error);
+    this.setState(state => ({
+      books: state.books = [],
+      shelves: state.shelves = [],
+      isLoading: state.isLoading = false,
+      isAppInError: state.isAppInError = true
+    }));
   }
   render() {
     return (
@@ -53,9 +76,10 @@ class BooksApp extends React.Component {
         <Route path='/search' render={() => (
           <SearchBooks
             searchForBooks={ query => this.onSearchForBooks(query) }
-            updateShelf={ (book,shelf) => { this.onUpdateShelf(book,shelf) }}
+            updateShelf={ (book,shelf,query) => { this.onUpdateShelf(book,shelf,query) }}
             results={this.state.results}
             books={this.state.books}
+            isLoading={this.state.isLoading}
           />
         )}/>
         <Route exact path='/' render={() => (
@@ -64,6 +88,7 @@ class BooksApp extends React.Component {
               updateShelf={ (book,shelf) => { this.onUpdateShelf(book,shelf) }}
               shelves={this.state.shelves}
               books={this.state.books}
+              isAppInError={this.state.isAppInError}
             />
           </div>
         )}/>

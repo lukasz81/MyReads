@@ -8,7 +8,13 @@ class SearchBooks extends Component {
   static PropTypes = {
     results: PropTypes.array.isRequired
   }
+  state = {
+    query: ''
+  }
   handleChange = (query) => {
+    this.setState({
+      query: query.trim()
+    })
     this.props.searchForBooks(query)
   }
   handleSelectChange = (book,shelf) => {
@@ -16,7 +22,6 @@ class SearchBooks extends Component {
   }
   render() {
     const {results} = this.props;
-    const {books} = this.props;
     const sortedResults = (results.length > 0) ? results.sort(sortBy('title')) : [];
     return(
       <div className="search-books">
@@ -25,7 +30,7 @@ class SearchBooks extends Component {
           <div className="search-books-input-wrapper">
             <input
               type="text"
-              onChange={ event => {this.handleChange(event.target.value)} }
+              onChange={event => {this.handleChange(event.target.value)}}
               placeholder="Search by title or author"/>
           </div>
         </div>
@@ -34,9 +39,9 @@ class SearchBooks extends Component {
             {sortedResults.length === 0 && (
               <p>NO RESULTS</p>
             )}
-            {sortedResults.map( book => (
+            {sortedResults.map(book => (
               <li key={book.id}>
-                <Book handleChange={ (book,shelf) => this.handleSelectChange(book,shelf)} shouldShowLoading={false} books={books} book={book}/>
+                <Book handleChange={(book,shelf) => this.handleSelectChange(book,shelf)} book={book}/>
               </li>
             ))}
           </ol>
