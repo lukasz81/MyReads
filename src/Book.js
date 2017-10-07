@@ -1,22 +1,30 @@
 import React, {Component} from 'react';
 
 class Book extends Component {
-  state = {
-    isBookLoading: false
+  constructor(props) {
+    super(props);
+    this.state = {
+      isBookLoading: false,
+      shelf: this.props.book.shelf
+    };
+    this.emitHandleChange = this.emitHandleChange.bind(this);
   }
-  emitHandleChange = (book,shelf) => {
-    this.props.handleChange(book,shelf)
-    this.setState({ isBookLoading: true })
+  emitHandleChange(book,shelf) {
+    const { handleChange } = this.props;
+    handleChange(book,shelf);
+    this.setState({
+      isBookLoading: true,
+      shelf: shelf
+     })
   }
   componentWillReceiveProps(nextProps) {
     this.setState({ isBookLoading: false })
   }
-
   render() {
     const {book} = this.props;
+    const {shelf} = this.state;
     return(
       <div className={(this.state.isBookLoading) ? 'book busy':'book'}>
-        <div className={book.isLoading ? 'busy':'not-busy'}></div>
         <div className="book-top">
           {(book.hasOwnProperty('imageLinks') && book.imageLinks.hasOwnProperty('thumbnail')) && (
             <div className="book-cover" style={{width: 128, height: 193, backgroundImage:`url("${book.imageLinks.thumbnail}")`}}>
@@ -24,7 +32,7 @@ class Book extends Component {
           )}
           <div className="book-shelf-changer">
             <select
-              defaultValue={book.shelf}
+              defaultValue={shelf}
               onChange={(event,currentBook=book) => this.emitHandleChange(currentBook,event.target.value)}>
               <option value="move" disabled>Move to...</option>
               <option value="currentlyReading">Currently Reading</option>

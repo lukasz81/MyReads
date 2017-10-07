@@ -62,7 +62,6 @@ class BooksApp extends React.Component {
     })
   }
   handleError(error) {
-    console.log(error);
     this.setState(state => ({
       books: state.books = [],
       shelves: state.shelves = [],
