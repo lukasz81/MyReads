@@ -1,4 +1,7 @@
-/* Test book data needed for the Jest & Enzyme suite */
+/*
+Idea of this component/class comes from: https://github.com/vivshaw/my-reads
+I really like how the student handled TDD in their project. 
+*/
 const testBooks = {
 	books: [
   {
