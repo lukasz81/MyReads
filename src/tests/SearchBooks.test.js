@@ -1,8 +1,7 @@
 import React from 'react';
 import SearchBooks from '../SearchBooks';
 import createRouterContext from 'react-router-test-context'
-import {shallow,configure,mount,render} from 'enzyme';
-import { testBooks, jsonHeaders } from './testBooksData';
+import {configure,mount} from 'enzyme';
 import Adapter from 'enzyme-adapter-react-15';
 configure({ adapter: new Adapter() });
 

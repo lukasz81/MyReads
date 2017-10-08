@@ -271,17 +271,4 @@ const testBooks = {
 ]
 };
 
-/* Test books with insecure URLs replaced with https */
-// const secureTestBooks = testBooks.books.map(book => {
-// 	return Object.assign({}, book, {
-// 		imageLinks: { thumbnail: 'https' + book.imageLinks.thumbnail.substring(4) }
-// 	});
-// });
-
-/* JSON headers for API requests */
- const jsonHeaders = {
- 	Accept: 'application/json',
- 	'Content-Type': 'application/json'
- };
-
-export { testBooks, jsonHeaders };
+export { testBooks };
