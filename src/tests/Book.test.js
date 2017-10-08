@@ -8,7 +8,6 @@ configure({ adapter: new Adapter() });
 describe('Render Book Component', () => {
   const handleChange = jest.fn();
   const book = testBooks.books[0];
-  const emitHandleChange = jest.fn();
   const reactElement = <Book key={book.id}
         title={book.title}
         authors={book.authors}

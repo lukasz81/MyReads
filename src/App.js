@@ -24,8 +24,11 @@ class BooksApp extends React.Component {
     return results
   }
   onSearchForBooks = (query) => {
+    console.log(query);
     if (query.length > 0) {
+      console.log('api');
       BooksAPI.search(query, this.state.limit).then(results => {
+        console.log(results);
         this.setState(state => ({
           results: state.results = this.addShelfIfNeeded(results)
         }))
@@ -74,8 +77,8 @@ class BooksApp extends React.Component {
       <div className="app">
         <Route path='/search' render={() => (
           <SearchBooks
-            searchForBooks={ query => this.onSearchForBooks(query) }
-            updateShelf={ (book,shelf,query) => { this.onUpdateShelf(book,shelf,query) }}
+            searchForBooks={query => this.onSearchForBooks(query)}
+            updateShelf={(book,shelf,query) => { this.onUpdateShelf(book,shelf,query)}}
             results={this.state.results}
             books={this.state.books}
             isLoading={this.state.isLoading}
@@ -84,7 +87,7 @@ class BooksApp extends React.Component {
         <Route exact path='/' render={() => (
           <div className={this.state.isLoading ? 'books busy':'books'}>
             <BookShelf
-              updateShelf={ (book,shelf) => { this.onUpdateShelf(book,shelf) }}
+              updateShelf={(book,shelf) => {this.onUpdateShelf(book,shelf)}}
               shelves={this.state.shelves}
               books={this.state.books}
               isAppInError={this.state.isAppInError}
