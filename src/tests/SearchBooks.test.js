@@ -6,8 +6,6 @@ import Adapter from 'enzyme-adapter-react-15';
 configure({ adapter: new Adapter() });
 
 describe('Render SearchBooks Component', () => {
-  const findShelf = jest.fn();
-  const handleShelfUpdate = jest.fn();
   const reactElement = <SearchBooks />;
 
   it("should create SearchBooks", () => {

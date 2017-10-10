@@ -14,6 +14,8 @@ class BooksApp extends React.Component {
     isAppInError: false,
     limit: 10
   }
+  // this function is going to take search results and compare it with current
+  // shelf state. If It finds the same book it will update book's shelf on the search results.
   addShelfIfNeeded = (results) => {
     const booksOnShelves = this.state.books;
     results.map(book => {
@@ -24,13 +26,10 @@ class BooksApp extends React.Component {
     return results
   }
   onSearchForBooks = (query) => {
-    console.log(query);
     if (query.length > 0) {
-      console.log('api');
       BooksAPI.search(query, this.state.limit).then(results => {
-        console.log(results);
         this.setState(state => ({
-          results: state.results = this.addShelfIfNeeded(results)
+          results: state.results = results.error ? [] : this.addShelfIfNeeded(results) // this will handle the error from API
         }))
       })
     } else {
