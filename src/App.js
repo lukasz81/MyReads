@@ -3,6 +3,7 @@ import {Route} from 'react-router-dom';
 import * as BooksAPI from './BooksAPI'
 import SearchBooks from './SearchBooks.js'
 import BookShelf from './BookShelf.js'
+import PropTypes from 'prop-types';
 import './App.css'
 
 class BooksApp extends React.Component {
@@ -13,6 +14,13 @@ class BooksApp extends React.Component {
     isLoading: true,
     isAppInError: false
   };
+  static PropTypes = {
+    addShelfIfNeeded: PropTypes.function,
+    onSearchForBooks: PropTypes.function,
+    onUpdateShelf: PropTypes.function,
+    componentDidMount: PropTypes.function,
+    handleError: PropTypes.function
+  }
   // this function is going to take search results and compare it with current
   // shelf state. If It finds the same book it will update book's shelf on the
   // search results.

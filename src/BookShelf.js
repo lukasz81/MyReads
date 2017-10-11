@@ -6,7 +6,8 @@ import PropTypes from 'prop-types';
 class BookShelfs extends Component {
   static PropTypes = {
     books: PropTypes.array.isRequired,
-    shelves: PropTypes.array.isRequired
+    shelves: PropTypes.array.isRequired,
+    isAppInError: PropTypes.boolean
   }
   handleChange = (book,shelf) => {
     this.props.updateShelf(book,shelf)

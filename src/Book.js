@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import PropTypes from 'prop-types';
 
 class Book extends Component {
   constructor(props) {
@@ -8,6 +9,12 @@ class Book extends Component {
       shelf: this.props.book.shelf
     };
     this.emitHandleChange = this.emitHandleChange.bind(this);
+  }
+  static PropTypes = {
+    emitHandleChange: PropTypes.function,
+    componentWillReceiveProps: PropTypes.function,
+    handleChange: PropTypes.function,
+    book: PropTypes.element.isRequired
   }
   emitHandleChange(book,shelf) {
     const { handleChange } = this.props;
@@ -22,9 +29,9 @@ class Book extends Component {
   }
   render() {
     const {book} = this.props;
-    const {shelf} = this.state;
+    const {shelf,isBookLoading} = this.state;
     return(
-      <div className={(this.state.isBookLoading) ? 'book busy':'book'}>
+      <div className={(isBookLoading) ? 'book busy':'book'}>
         <div className="book-top">
           {(book.hasOwnProperty('imageLinks') && book.imageLinks.hasOwnProperty('thumbnail')) && (
             <div className="book-cover" style={{width: 128, height: 193, backgroundImage:`url("${book.imageLinks.thumbnail}")`}}>
