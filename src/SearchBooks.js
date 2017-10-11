@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import sortBy from 'sort-by';
 import Book from './Book.js';
 import BooksApp from './App.js';
+import { Debounce } from 'react-throttle';
 
 class SearchBooks extends Component {
   constructor(props) {
@@ -12,7 +13,9 @@ class SearchBooks extends Component {
     this.handleChange = this.handleChange.bind(this);
   }
   static PropTypes = {
-    results: PropTypes.array.isRequired
+    results: PropTypes.array.isRequired,
+    handleChange: PropTypes.function,
+    handleSelectChange: PropTypes.function
   }
   handleChange = (query) => {
     this.setState({
@@ -25,6 +28,7 @@ class SearchBooks extends Component {
   }
   render() {
     const {results} = this.props;
+    const {handleChange,handleSelectChange} = this;
     const sortedResults = (results && results.length > 0) ? results.sort(sortBy('title')) : [];
     return(
       <Router>
@@ -34,11 +38,13 @@ class SearchBooks extends Component {
               <div className="search-books-bar">
                 <Link className="close-search" to="/"/>
                 <div className="search-books-input-wrapper">
-                  <input
-                    className="test"
-                    type="text"
-                    onChange={event => {this.handleChange(event.target.value)}}
-                    placeholder="Search by title or author"/>
+                  <Debounce time="400" handler="onChange">
+                    <input
+                      className="test"
+                      type="text"
+                      onChange={event => {handleChange(event.target.value)}}
+                      placeholder="Search by title or author"/>
+                </Debounce>
                 </div>
               </div>
               <div className="search-books-results">
@@ -48,7 +54,7 @@ class SearchBooks extends Component {
                   )}
                   {sortedResults.map(book => (
                     <li key={book.id}>
-                      <Book handleChange={(book,shelf) => this.handleSelectChange(book,shelf)} book={book}/>
+                      <Book handleChange={(book,shelf) => handleSelectChange(book,shelf)} book={book}/>
                     </li>
                   ))}
                 </ol>

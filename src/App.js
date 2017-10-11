@@ -11,23 +11,23 @@ class BooksApp extends React.Component {
     results: [],
     shelves: [],
     isLoading: true,
-    isAppInError: false,
-    limit: 10
-  }
+    isAppInError: false
+  };
   // this function is going to take search results and compare it with current
-  // shelf state. If It finds the same book it will update book's shelf on the search results.
+  // shelf state. If It finds the same book it will update book's shelf on the
+  // search results.
   addShelfIfNeeded = (results) => {
     const booksOnShelves = this.state.books;
     results.map(book => {
-      const existingBook = booksOnShelves.find((b) => b.id === book.id)
-      book.shelf = existingBook ? existingBook.shelf : 'none'
-      return
+      const existingBook = booksOnShelves.find((b) => b.id === book.id);
+      return book.shelf = existingBook ? existingBook.shelf : 'none';
     })
     return results
-  }
+  };
   onSearchForBooks = (query) => {
+    const SEAERCH_LIMIT = 10;
     if (query.length > 0) {
-      BooksAPI.search(query, this.state.limit).then(results => {
+      BooksAPI.search(query, SEAERCH_LIMIT).then(results => {
         this.setState(state => ({
           results: state.results = results.error ? [] : this.addShelfIfNeeded(results) // this will handle the error from API
         }))
@@ -37,7 +37,7 @@ class BooksApp extends React.Component {
         results: state.results = []
       }))
     }
-  }
+  };
   onUpdateShelf = (book,shelf) => {
     const currentBook = book;
     currentBook.shelf = shelf;
@@ -49,7 +49,7 @@ class BooksApp extends React.Component {
     }).catch(error => {
       this.handleError(error);
     })
-  }
+  };
   componentDidMount() {
     BooksAPI.getAll().then(books => {
       books.forEach(book => {
@@ -62,7 +62,7 @@ class BooksApp extends React.Component {
     }).catch(error => {
       this.handleError();
     })
-  }
+  };
   handleError(error) {
     this.setState(state => ({
       books: state.books = [],
@@ -70,7 +70,7 @@ class BooksApp extends React.Component {
       isLoading: state.isLoading = false,
       isAppInError: state.isAppInError = true
     }));
-  }
+  };
   render() {
     return (
       <div className="app">
@@ -95,6 +95,6 @@ class BooksApp extends React.Component {
         )}/>
       </div> )
   }
-}
+};
 
 export default BooksApp
