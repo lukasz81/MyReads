@@ -26,10 +26,14 @@ class BooksApp extends React.Component {
   // search results.
   addShelfIfNeeded = (results) => {
     const booksOnShelves = this.state.books;
-    results.map(book => {
-      const existingBook = booksOnShelves.find((b) => b.id === book.id);
-      return book.shelf = existingBook ? existingBook.shelf : 'none';
-    })
+    const hashTable = {};
+    booksOnShelves.forEach(book => hashTable[book.id] = book.shelf);
+    results.forEach(result => result.shelf = hashTable[result.id]  || 'none');
+    // const booksOnShelves = this.state.books;
+    // results.map(result => {
+    //   const existingBook = booksOnShelves.find(bookOnShelf => bookOnShelf.id === result.id );
+    //   return result.shelf = existingBook ? existingBook.shelf : 'none';
+    // })
     return results
   };
   onSearchForBooks = (query) => {
